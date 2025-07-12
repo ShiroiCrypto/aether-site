@@ -1,0 +1,110 @@
+# =====================
+# Configuração Discloud - Aether
+# =====================
+
+# Informações básicas da aplicação
+name: aether
+type: nodejs
+version: 18
+
+# Configurações de rede
+network:
+  port: 8080
+  domain: aether.discloud.app
+  ssl: true
+
+# Configurações de recursos
+resources:
+  cpu: 1
+  ram: 512
+  disk: 1024
+
+# Configurações de ambiente
+env:
+  NODE_ENV: production
+  PORT: 8080
+
+# Configurações de deploy
+deploy:
+  strategy: rolling
+  timeout: 300
+  health_check:
+    path: /api/health
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+# Configurações de monitoramento
+monitoring:
+  enabled: true
+  logs:
+    level: info
+    format: json
+    retention: 7d
+
+# Configurações de segurança
+security:
+  headers:
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Configurações de cache
+cache:
+  static:
+    enabled: true
+    ttl: 3600
+  api:
+    enabled: true
+    ttl: 300
+
+# Configurações de CDN
+cdn:
+  enabled: true
+  cache:
+    enabled: true
+    ttl: 86400
+
+# Configurações de auto-scaling
+scaling:
+  auto_scale:
+    enabled: true
+    min_instances: 1
+    max_instances: 3
+    metrics:
+      cpu_threshold: 80
+      memory_threshold: 80
+      request_threshold: 100
+
+# Configurações de backup
+backup:
+  enabled: true
+  schedule: daily
+  retention: 30d
+
+# Configurações de rollback
+rollback:
+  enabled: true
+  automatic: true
+  threshold: 3
+
+# Configurações de performance
+performance:
+  gzip:
+    enabled: true
+    level: 6
+  minification:
+    enabled: true
+  image_optimization:
+    enabled: true
+    quality: 85
+
+# Configurações de desenvolvimento
+development:
+  hot_reload:
+    enabled: false
+  debug:
+    enabled: false
+  verbose_logs:
+    enabled: false 

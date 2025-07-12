@@ -10,14 +10,67 @@ class MongoDB {
   async connect() {
     try {
       const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-      this.client = new MongoClient(uri);
+      
+      console.log('🔗 Tentando conectar ao MongoDB...');
+      console.log('📡 URI:', uri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Hide credentials
+      
+      // Configurações básicas que funcionam com MongoDB Atlas
+      const options = {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 45000,
+        maxPoolSize: 10,
+        minPoolSize: 1,
+        maxIdleTimeMS: 30000,
+        retryWrites: true,
+        w: 'majority'
+      };
+      
+      // Configurações específicas para MongoDB Atlas
+      if (uri.includes('mongodb+srv://')) {
+        // Configuração TLS mais simples para MongoDB Atlas
+        options.tls = true;
+        options.tlsAllowInvalidCertificates = false;
+        options.tlsAllowInvalidHostnames = false;
+        
+        // Remover family para permitir IPv6 se necessário
+        // options.family = 4;
+      }
+      
+      this.client = new MongoClient(uri, options);
       await this.client.connect();
       this.db = this.client.db('aether');
       this.isConnected = true;
       console.log('🌌 MongoDB conectado com sucesso');
     } catch (error) {
-      console.error('❌ Erro ao conectar MongoDB:', error);
-      throw error;
+      console.error('❌ Erro ao conectar MongoDB:', error.message);
+      
+      // Tentar conexão alternativa sem TLS se a primeira falhar
+      if (process.env.MONGODB_URI && process.env.MONGODB_URI.includes('mongodb+srv://') && error.message.includes('SSL')) {
+        console.log('🔄 Tentando conexão alternativa sem TLS...');
+        try {
+          const fallbackOptions = {
+            serverSelectionTimeoutMS: 30000,
+            socketTimeoutMS: 45000,
+            maxPoolSize: 10,
+            minPoolSize: 1,
+            maxIdleTimeMS: 30000,
+            retryWrites: true,
+            w: 'majority',
+            tls: false
+          };
+          
+          this.client = new MongoClient(process.env.MONGODB_URI, fallbackOptions);
+          await this.client.connect();
+          this.db = this.client.db('aether');
+          this.isConnected = true;
+          console.log('🌌 MongoDB conectado com configuração alternativa');
+        } catch (fallbackError) {
+          console.error('❌ Falha na conexão alternativa:', fallbackError.message);
+          this.isConnected = false;
+        }
+      } else {
+        this.isConnected = false;
+      }
     }
   }
 

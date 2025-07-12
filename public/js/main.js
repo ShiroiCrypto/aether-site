@@ -74,23 +74,60 @@ document.querySelectorAll('a.nav-link').forEach(link => {
 // Theme Switching & Preferences
 // =====================
 const themeOptions = document.querySelectorAll('.theme-option');
+const themeBtns = document.querySelectorAll('.theme-btn');
 const root = document.documentElement;
 const THEME_KEY = 'aether-theme';
 
 function setTheme(theme) {
+  // Remove active class from all theme buttons
   themeOptions.forEach(btn => btn.classList.remove('active'));
-  document.querySelector(`.theme-option[data-theme="${theme}"]`).classList.add('active');
+  themeBtns.forEach(btn => btn.classList.remove('active'));
+  
+  // Add active class to current theme button
+  const activeOption = document.querySelector(`.theme-option[data-theme="${theme}"]`);
+  const activeBtn = document.querySelector(`.theme-btn[data-theme="${theme}"]`);
+  
+  if (activeOption) activeOption.classList.add('active');
+  if (activeBtn) activeBtn.classList.add('active');
+  
+  // Set theme on root element
   root.setAttribute('data-theme', theme);
   localStorage.setItem(THEME_KEY, theme);
+  
+  // Update theme toggle button in chat
+  const themeToggle = document.getElementById('theme-toggle');
+  if (themeToggle) {
+    const icon = themeToggle.querySelector('i');
+    if (icon) {
+      if (theme === 'dark') {
+        icon.className = 'fas fa-sun';
+      } else {
+        icon.className = 'fas fa-moon';
+      }
+    }
+  }
+  
+  // Trigger custom event for other components
+  window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
 }
 
+// Add event listeners to all theme buttons
 themeOptions.forEach(btn => {
+  btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+});
+
+themeBtns.forEach(btn => {
   btn.addEventListener('click', () => setTheme(btn.dataset.theme));
 });
 
 // Carregar tema salvo
 const savedTheme = localStorage.getItem(THEME_KEY) || 'cosmic';
 setTheme(savedTheme);
+
+// Listen for theme changes from other components
+window.addEventListener('themeChanged', (e) => {
+  setTheme(e.detail.theme);
+});
 
 // =====================
 // Particles Toggle

@@ -410,15 +410,29 @@ class AetherChat {
   }
 
   toggleChatTheme() {
-    const chatContainer = document.querySelector('.chat-container');
-    chatContainer.classList.toggle('dark-theme');
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    let newTheme;
     
-    const icon = this.themeToggle.querySelector('i');
-    if (chatContainer.classList.contains('dark-theme')) {
-      icon.className = 'fas fa-sun';
-    } else {
-      icon.className = 'fas fa-moon';
+    // Cycle through themes: cosmic -> neon -> crystal -> dark -> cosmic
+    switch (currentTheme) {
+      case 'cosmic':
+        newTheme = 'neon';
+        break;
+      case 'neon':
+        newTheme = 'crystal';
+        break;
+      case 'crystal':
+        newTheme = 'dark';
+        break;
+      case 'dark':
+        newTheme = 'cosmic';
+        break;
+      default:
+        newTheme = 'cosmic';
     }
+    
+    // Trigger theme change event
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
   }
 
   saveHistory() {

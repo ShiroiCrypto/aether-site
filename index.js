@@ -10,13 +10,13 @@ const fs = require('fs').promises;
 const mongodb = require('./database/mongodb');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const oauth = new DiscordOauth2();
 
 // Middlewares
 app.use(cors({ 
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://aether.discloud.app', 'https://aether.vercel.app'] 
+    ? ['https://aether.discloud.app', 'http://localhost:8080'] 
     : true, 
   credentials: true 
 }));
@@ -95,6 +95,29 @@ async function addMessageToConversation(conversationId, message) {
 }
 
 // =====================
+// Endpoint de Debug para Discord OAuth2
+// =====================
+app.get('/api/auth/debug', (req, res) => {
+  const config = {
+    clientId: process.env.DISCORD_CLIENT_ID ? '✅ Configurado' : '❌ Não configurado',
+    clientSecret: process.env.DISCORD_CLIENT_SECRET ? '✅ Configurado' : '❌ Não configurado',
+    redirectUri: process.env.DISCORD_REDIRECT_URI || '❌ Não configurado',
+    nodeEnv: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  };
+  
+  res.json({
+    message: 'Configurações do Discord OAuth2',
+    config,
+    headers: {
+      host: req.headers.host,
+      'user-agent': req.headers['user-agent'],
+      origin: req.headers.origin
+    }
+  });
+});
+
+// =====================
 // Rotas de Autenticação Discord
 // =====================
 app.get('/api/auth/discord/login', (req, res) => {
@@ -109,7 +132,7 @@ app.get('/api/auth/discord/login', (req, res) => {
     client_id: process.env.DISCORD_CLIENT_ID,
     redirect_uri: process.env.DISCORD_REDIRECT_URI,
     response_type: 'code',
-    scope: 'identify email guilds'
+    scope: 'identify email'
   });
   res.redirect(`https://discord.com/api/oauth2/authorize?${params.toString()}`);
 });
@@ -136,7 +159,7 @@ app.get('/api/auth/discord/callback', async (req, res) => {
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
       code,
-      scope: 'identify email guilds',
+      scope: 'identify email',
       grantType: 'authorization_code',
       redirectUri: process.env.DISCORD_REDIRECT_URI
     });
@@ -197,25 +220,58 @@ app.get('/api/auth/discord/callback', async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
     
-    res.redirect('/');
+    // Redirecionar para o domínio correto em produção
+    const redirectUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://aether.discloud.app' 
+      : '/';
+    
+    res.redirect(redirectUrl);
   } catch (err) {
-    console.error('Erro na autenticação Discord:', err);
+    console.error('❌ Erro na autenticação Discord:', err);
+    console.error('📋 Detalhes do erro:', {
+      message: err.message,
+      code: err.code,
+      status: err.status,
+      response: err.response?.data
+    });
     
     // Fornecer mensagem de erro mais específica
     let errorMessage = 'Erro na autenticação Discord';
+    let errorCode = 500;
+    
     if (err.message) {
       if (err.message.includes('invalid_grant')) {
         errorMessage = 'Código de autorização inválido ou expirado';
+        errorCode = 400;
       } else if (err.message.includes('invalid_client')) {
         errorMessage = 'Configuração do cliente Discord inválida';
+        errorCode = 500;
       } else if (err.message.includes('invalid_request')) {
         errorMessage = 'Requisição inválida para o Discord';
+        errorCode = 400;
+      } else if (err.message.includes('invalid_scope')) {
+        errorMessage = 'Escopo de permissões inválido';
+        errorCode = 400;
+      } else if (err.message.includes('unauthorized_client')) {
+        errorMessage = 'Cliente Discord não autorizado';
+        errorCode = 401;
       } else {
         errorMessage = `Erro: ${err.message}`;
+        errorCode = 500;
       }
     }
     
-    res.status(500).send(`Erro na autenticação Discord: ${errorMessage}`);
+    // Log detalhado para debug
+    console.error('🔍 Debug OAuth2:', {
+      clientId: process.env.DISCORD_CLIENT_ID ? '✅' : '❌',
+      clientSecret: process.env.DISCORD_CLIENT_SECRET ? '✅' : '❌',
+      redirectUri: process.env.DISCORD_REDIRECT_URI,
+      nodeEnv: process.env.NODE_ENV,
+      code: req.query.code ? '✅' : '❌',
+      error: req.query.error
+    });
+    
+    res.status(errorCode).send(`Erro na autenticação Discord: ${errorMessage}`);
   }
 });
 
@@ -730,21 +786,26 @@ app.get('*', (req, res) => {
 // =====================
 async function startServer() {
   try {
-    // Conectar ao MongoDB
+    // Conectar ao MongoDB (não falhar se não conectar)
     if (process.env.MONGODB_URI) {
-      await mongodb.connect();
-      
-      // Limpar sessões expiradas a cada hora
-      setInterval(() => {
-        mongodb.cleanupExpiredSessions();
-      }, 60 * 60 * 1000);
+      try {
+        await mongodb.connect();
+        
+        // Limpar sessões expiradas a cada hora
+        setInterval(() => {
+          mongodb.cleanupExpiredSessions();
+        }, 60 * 60 * 1000);
+      } catch (dbError) {
+        console.warn('⚠️ MongoDB não conectou, continuando sem banco de dados:', dbError.message);
+      }
     } else {
       console.log('⚠️ MONGODB_URI não configurado, usando modo fallback');
     }
     
     // Iniciar servidor
-    app.listen(PORT, () => {
-      console.log(`🌌 Aether rodando em http://localhost:${PORT}`);
+    const serverPort = process.env.PORT || 8080;
+    app.listen(serverPort, () => {
+      console.log(`🌌 Aether rodando em http://localhost:${serverPort}`);
       console.log(`📡 Ambiente: ${process.env.NODE_ENV || 'development'}`);
       console.log(`🔐 Discord OAuth2: ${process.env.DISCORD_CLIENT_ID ? 'Configurado' : 'Não configurado'}`);
       console.log(`🤖 Gemini API: ${process.env.GEMINI_API_KEY ? 'Configurado' : 'Não configurado'}`);

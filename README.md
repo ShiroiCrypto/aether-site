@@ -89,7 +89,7 @@ GEMINI_API_KEY=sua_chave_gemini_aqui
 # Discord OAuth2
 DISCORD_CLIENT_ID=seu_client_id_aqui
 DISCORD_CLIENT_SECRET=seu_client_secret_aqui
-DISCORD_REDIRECT_URI=http://localhost:3000/api/auth/discord/callback
+DISCORD_REDIRECT_URI=https://aether.discloud.app/api/auth/discord/callback
 
 # MongoDB (Opcional)
 MONGODB_URI=mongodb://localhost:27017/aether
@@ -114,7 +114,7 @@ npm start
 ```
 
 ### 5. Acesse o Site
-🌐 **http://localhost:3000**
+🌐 **http://localhost:8080**
 
 ---
 
@@ -135,7 +135,7 @@ npm start
 ### Verificar Configuração
 ```bash
 # Teste o status da configuração
-curl http://localhost:3000/api/health
+curl http://localhost:8080/api/health
 ```
 
 ---

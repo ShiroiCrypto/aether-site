@@ -1,24 +1,40 @@
 /* =====================
    Mobile-First Responsive Design
+   Sistema de Temas Integrado
    ===================== */
 
-/* Base Mobile Styles (320px+) */
-@media (max-width: 767px) {
+/* =====================
+   Breakpoints Principais
+   ===================== */
+/* Mobile Small: 320px - 479px */
+/* Mobile Medium: 480px - 767px */
+/* Tablet: 768px - 1023px */
+/* Desktop: 1024px+ */
+
+/* =====================
+   Mobile Small (320px - 479px)
+   ===================== */
+@media (max-width: 479px) {
   /* =====================
-     Navbar Mobile
+     Navbar Mobile Small
      ===================== */
   .navbar {
     padding: 0;
   }
   
   .nav-container {
-    padding: 0.5rem 1rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
     flex-wrap: wrap;
+    gap: var(--spacing-sm);
   }
   
   .nav-logo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     flex: 1;
+  }
+  
+  .nav-logo i {
+    font-size: 1.4rem;
   }
   
   .nav-menu {
@@ -32,9 +48,10 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 2rem 0;
-    transition: left 0.3s ease;
-    z-index: 99;
+    padding: var(--spacing-lg) 0;
+    transition: left var(--transition-normal);
+    z-index: 999;
+    overflow-y: auto;
   }
   
   .nav-menu.active {
@@ -42,32 +59,33 @@
   }
   
   .nav-link {
-    font-size: 1.2rem;
-    padding: 1rem 0;
+    font-size: 1.1rem;
+    padding: var(--spacing-md) 0;
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid var(--color-border);
+    margin: 0 var(--spacing-lg);
   }
   
   .nav-toggle {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    padding: 0.5rem;
-    z-index: 100;
+    padding: var(--spacing-xs);
+    z-index: 1001;
   }
   
   .nav-toggle span {
-    width: 25px;
-    height: 3px;
+    width: 22px;
+    height: 2px;
     background: var(--color-primary);
-    margin: 3px 0;
-    transition: 0.3s;
-    border-radius: 2px;
+    margin: 2px 0;
+    transition: var(--transition-fast);
+    border-radius: 1px;
   }
   
   .nav-toggle.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
+    transform: rotate(-45deg) translate(-4px, 5px);
   }
   
   .nav-toggle.active span:nth-child(2) {
@@ -75,20 +93,493 @@
   }
   
   .nav-toggle.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
+    transform: rotate(45deg) translate(-4px, -5px);
   }
   
   .nav-auth {
-    gap: 0.5rem;
+    gap: var(--spacing-xs);
+  }
+  
+  .theme-selector-nav {
+    display: none;
   }
   
   .btn-discord {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+    min-width: auto;
   }
   
   .user-profile {
-    gap: 0.3rem;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+  }
+  
+  .user-profile img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* =====================
+     Hero Section Mobile Small
+     ===================== */
+  .hero {
+    padding: 5rem var(--spacing-sm) var(--spacing-lg);
+    min-height: 100vh;
+  }
+  
+  .hero-title {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: center;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    max-width: 260px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+  
+  /* =====================
+     Sections Mobile Small
+     ===================== */
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .section-header h2 {
+    font-size: 1.6rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .section-header p {
+    font-size: 0.9rem;
+  }
+  
+  /* =====================
+     About Section Mobile Small
+     ===================== */
+  .about {
+    padding: var(--spacing-xl) var(--spacing-sm);
+  }
+  
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .about-card {
+    padding: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .about-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .about-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  /* =====================
+     Features Section Mobile Small
+     ===================== */
+  .features {
+    padding: var(--spacing-xl) var(--spacing-sm);
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .feature-item {
+    padding: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .feature-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .feature-item p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  /* =====================
+     Chat Section Mobile Small
+     ===================== */
+  .chat-demo {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+  
+  .chat-cta {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .cta-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .cta-content p {
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .btn-cta-discord {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .chat-container {
+    height: 400px;
+    border-radius: var(--border-radius-sm);
+  }
+  
+  .chat-sidebar {
+    width: 260px;
+  }
+  
+  .chat-header {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .chat-controls {
+    gap: var(--spacing-xs);
+  }
+  
+  .btn-control {
+    width: 28px;
+    height: 28px;
+    padding: var(--spacing-xs);
+    font-size: 0.8rem;
+  }
+  
+  .chat-messages {
+    padding: var(--spacing-xs);
+    gap: var(--spacing-xs);
+  }
+  
+  .message {
+    gap: var(--spacing-xs);
+  }
+  
+  .message-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+  
+  .message-content {
+    font-size: 0.8rem;
+  }
+  
+  .message-header {
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .message-author {
+    font-size: 0.75rem;
+  }
+  
+  .message-time {
+    font-size: 0.7rem;
+  }
+  
+  .message-text {
+    padding: var(--spacing-xs);
+    font-size: 0.8rem;
+  }
+  
+  .chat-input {
+    padding: var(--spacing-xs);
+  }
+  
+  .input-container {
+    gap: var(--spacing-xs);
+  }
+  
+  #chat-input {
+    padding: var(--spacing-xs);
+    font-size: 0.8rem;
+    min-height: 32px;
+  }
+  
+  .btn-send {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+    min-width: 45px;
+  }
+  
+  .input-info {
+    font-size: 0.7rem;
+  }
+  
+  /* =====================
+     Discord Section Mobile Small
+     ===================== */
+  .discord-integration {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+  
+  .discord-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .discord-status {
+    padding: var(--spacing-md);
+  }
+  
+  .status-header {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .status-header i {
+    font-size: 1.5rem;
+  }
+  
+  .status-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .status-info {
+    gap: var(--spacing-sm);
+  }
+  
+  .status-item {
+    padding: var(--spacing-xs) 0;
+    font-size: 0.9rem;
+  }
+  
+  .discord-actions {
+    gap: var(--spacing-lg);
+  }
+  
+  .action-buttons {
+    gap: var(--spacing-md);
+  }
+  
+  .button-group {
+    gap: var(--spacing-sm);
+  }
+  
+  .btn-discord-invite, .btn-community {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  .btn-discord-login {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  .bot-features {
+    padding: var(--spacing-md);
+  }
+  
+  .bot-features h4 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .bot-features ul {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  .bot-features ul li {
+    padding: var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+  
+  /* =====================
+     Customization Section Mobile Small
+     ===================== */
+  .customization {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+  
+  .customization-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .theme-selector, .settings-panel {
+    padding: var(--spacing-md);
+  }
+  
+  .theme-selector h3, .settings-panel h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .theme-options {
+    gap: var(--spacing-sm);
+  }
+  
+  .theme-option {
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  
+  .theme-preview {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .setting-item {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .setting-item label {
+    font-size: 0.9rem;
+  }
+  
+  .setting-item select {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs);
+  }
+  
+  /* =====================
+     Footer Mobile Small
+     ===================== */
+  .footer {
+    padding: var(--spacing-lg) var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    text-align: center;
+  }
+  
+  .footer-logo {
+    justify-content: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .footer-section h4 {
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .footer-section ul {
+    gap: var(--spacing-xs);
+  }
+  
+  .footer-section ul li a {
+    font-size: 0.8rem;
+  }
+  
+  /* =====================
+     Modal Mobile Small
+     ===================== */
+  .modal-content {
+    padding: var(--spacing-md);
+    width: 95%;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .modal-body p {
+    font-size: 0.9rem;
+  }
+  
+  .modal-body ul li {
+    font-size: 0.8rem;
+  }
+  
+  .btn-discord-full {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+}
+
+/* =====================
+   Mobile Medium (480px - 767px)
+   ===================== */
+@media (min-width: 480px) and (max-width: 767px) {
+  /* =====================
+     Navbar Mobile Medium
+     ===================== */
+  .nav-container {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .nav-logo {
+    font-size: 1.3rem;
+  }
+  
+  .nav-logo i {
+    font-size: 1.6rem;
+  }
+  
+  .nav-menu {
+    top: 65px;
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .nav-link {
+    font-size: 1.2rem;
+    padding: var(--spacing-md) 0;
+    margin: 0 var(--spacing-xl);
+  }
+  
+  .nav-toggle span {
+    width: 25px;
+    height: 3px;
+    margin: 3px 0;
+  }
+  
+  .btn-discord {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  .theme-selector-nav {
+    display: none;
   }
   
   .user-profile img {
@@ -97,53 +588,35 @@
   }
   
   /* =====================
-     Hero Section Mobile
+     Hero Section Mobile Medium
      ===================== */
   .hero {
-    padding: 5rem 1rem 2rem 1rem;
-    min-height: 100vh;
+    padding: 6rem var(--spacing-md) var(--spacing-xl);
   }
   
   .hero-title {
-    font-size: 2rem;
-    line-height: 1.2;
-    margin-bottom: 1rem;
+    font-size: 2.2rem;
   }
   
   .hero-subtitle {
     font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .hero-buttons {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
   }
   
   .btn-primary, .btn-secondary {
-    width: 100%;
-    max-width: 280px;
-    padding: 1rem 1.5rem;
+    max-width: 300px;
+    padding: var(--spacing-md) var(--spacing-lg);
     font-size: 1rem;
-    justify-content: center;
   }
   
   /* =====================
-     Sections Mobile
+     Sections Mobile Medium
      ===================== */
   .container {
-    padding: 0 1rem;
-  }
-  
-  .section-header {
-    text-align: center;
-    margin-bottom: 2rem;
+    padding: 0 var(--spacing-md);
   }
   
   .section-header h2 {
     font-size: 1.8rem;
-    margin-bottom: 0.5rem;
   }
   
   .section-header p {
@@ -151,61 +624,44 @@
   }
   
   /* =====================
-     About Section Mobile
+     About & Features Mobile Medium
      ===================== */
-  .about {
-    padding: 3rem 1rem;
+  .about, .features {
+    padding: var(--spacing-2xl) var(--spacing-md);
   }
   
-  .about-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .about-content, .features-grid {
+    gap: var(--spacing-lg);
   }
   
-  .about-card {
-    padding: 1.5rem;
-    text-align: center;
+  .about-card, .feature-item {
+    padding: var(--spacing-lg);
   }
   
-  .card-icon {
+  .card-icon, .feature-icon {
     width: 60px;
     height: 60px;
     font-size: 1.5rem;
   }
   
-  /* =====================
-     Features Section Mobile
-     ===================== */
-  .features {
-    padding: 3rem 1rem;
+  .about-card h3, .feature-item h3 {
+    font-size: 1.2rem;
   }
   
-  .features-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .feature-item {
-    padding: 1.5rem;
-    text-align: center;
-  }
-  
-  .feature-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+  .about-card p, .feature-item p {
+    font-size: 1rem;
   }
   
   /* =====================
-     Chat Section Mobile
+     Chat Section Mobile Medium
      ===================== */
   .chat-demo {
-    padding: 3rem 1rem;
+    padding: var(--spacing-xl) var(--spacing-md);
   }
   
   .chat-cta {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
   }
   
   .cta-content h3 {
@@ -217,404 +673,522 @@
   }
   
   .btn-cta-discord {
-    width: 100%;
-    max-width: 280px;
-    padding: 1rem 1.5rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
     font-size: 1rem;
-    justify-content: center;
   }
   
-  /* =====================
-     Chat Container Mobile
-     ===================== */
   .chat-container {
-    height: 70vh;
-    border-radius: 12px;
-    margin: 0;
+    height: 450px;
   }
   
   .chat-sidebar {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: -100%;
-    transition: left 0.3s ease;
-    z-index: 10;
-  }
-  
-  .chat-sidebar.active {
-    left: 0;
-  }
-  
-  .chat-main {
-    width: 100%;
+    width: 280px;
   }
   
   .chat-header {
-    padding: 0.8rem 1rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .chat-status {
-    font-size: 0.9rem;
-  }
-  
-  .chat-controls {
-    gap: 0.3rem;
+    padding: var(--spacing-sm);
   }
   
   .btn-control {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     font-size: 0.9rem;
   }
   
   .chat-messages {
-    padding: 0.8rem;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
   }
   
   .message {
-    margin: 0.5rem 0;
-    padding: 0.8rem;
+    gap: var(--spacing-sm);
   }
   
   .message-avatar {
     width: 32px;
     height: 32px;
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
   
   .message-content {
-    margin-left: 0.5rem;
-  }
-  
-  .message-header {
-    margin-bottom: 0.3rem;
-  }
-  
-  .message-author {
-    font-size: 0.8rem;
-  }
-  
-  .message-time {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
   }
   
   .message-text {
+    padding: var(--spacing-sm);
     font-size: 0.9rem;
-    line-height: 1.4;
   }
   
   .chat-input {
-    padding: 0.8rem;
-  }
-  
-  .input-container {
-    gap: 0.5rem;
+    padding: var(--spacing-sm);
   }
   
   #chat-input {
-    padding: 0.8rem;
+    padding: var(--spacing-sm);
     font-size: 0.9rem;
+    min-height: 40px;
   }
   
   .btn-send {
-    width: 40px;
-    height: 40px;
+    padding: var(--spacing-sm) var(--spacing-md);
     font-size: 0.9rem;
-  }
-  
-  .input-info {
-    font-size: 0.8rem;
+    min-width: 60px;
   }
   
   /* =====================
-     Discord Integration Mobile
+     Discord Section Mobile Medium
      ===================== */
   .discord-integration {
-    padding: 3rem 1rem;
+    padding: var(--spacing-xl) var(--spacing-md);
   }
   
   .discord-content {
-    flex-direction: column;
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
   }
   
-  .discord-status, .discord-actions {
-    width: 100%;
+  .discord-status {
+    padding: var(--spacing-lg);
   }
   
-  .status-card {
-    padding: 1.5rem;
+  .status-header i {
+    font-size: 1.8rem;
   }
   
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
+  .status-header h3 {
+    font-size: 1.2rem;
   }
   
-  .button-group {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .btn-discord-invite, .btn-community, .btn-discord-login {
-    width: 100%;
-    padding: 1rem 1.5rem;
+  .btn-discord-invite, .btn-community {
+    padding: var(--spacing-md) var(--spacing-lg);
     font-size: 1rem;
-    justify-content: center;
+  }
+  
+  .btn-discord-login {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1rem;
   }
   
   .bot-features {
-    margin-top: 1.5rem;
+    padding: var(--spacing-lg);
   }
   
   .bot-features h4 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.2rem;
   }
   
   .bot-features ul {
-    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
   }
   
   .bot-features ul li {
+    padding: var(--spacing-md);
     font-size: 0.9rem;
-    padding: 0.8rem;
   }
   
   /* =====================
-     Customization Mobile
+     Customization Section Mobile Medium
      ===================== */
   .customization {
-    padding: 3rem 1rem;
+    padding: var(--spacing-xl) var(--spacing-md);
   }
   
   .customization-content {
-    flex-direction: column;
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
   }
   
   .theme-selector, .settings-panel {
-    width: 100%;
+    padding: var(--spacing-lg);
   }
   
-  .theme-options {
-    flex-direction: column;
-    gap: 1rem;
+  .theme-selector h3, .settings-panel h3 {
+    font-size: 1.2rem;
   }
   
   .theme-option {
-    width: 100%;
-    padding: 1rem;
+    padding: var(--spacing-md);
+    font-size: 1rem;
   }
   
-  .setting-item {
-    margin-bottom: 1rem;
+  .theme-preview {
+    width: 36px;
+    height: 36px;
   }
   
   .setting-item label {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   
   .setting-item select {
-    width: 100%;
-    padding: 0.8rem;
+    font-size: 0.9rem;
+    padding: var(--spacing-sm);
+  }
+  
+  /* =====================
+     Footer Mobile Medium
+     ===================== */
+  .footer {
+    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+  }
+  
+  .footer-section ul li a {
     font-size: 0.9rem;
   }
   
   /* =====================
-     Footer Mobile
+     Modal Mobile Medium
      ===================== */
-  .footer {
-    padding: 2rem 1rem;
-  }
-  
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    text-align: center;
-  }
-  
-  .footer-section {
-    padding: 0;
-  }
-  
-  .footer-logo {
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  
-  .footer-section h4 {
-    margin-bottom: 1rem;
-  }
-  
-  .footer-section ul {
-    gap: 0.5rem;
-  }
-  
-  .footer-section ul li {
-    padding: 0.3rem 0;
-  }
-  
-  /* =====================
-     Modal Mobile
-     ===================== */
-  .modal {
-    padding: 1rem;
-  }
-  
   .modal-content {
-    width: 100%;
-    max-width: 90vw;
-    margin: 2rem auto;
-    padding: 1.5rem;
-  }
-  
-  .modal-header {
-    padding: 0 0 1rem 0;
+    padding: var(--spacing-lg);
+    width: 90%;
   }
   
   .modal-header h3 {
     font-size: 1.2rem;
   }
   
-  .modal-body {
-    padding: 1rem 0;
-  }
-  
   .modal-body p {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-  
-  .modal-body ul {
-    margin-bottom: 1.5rem;
+    font-size: 1rem;
   }
   
   .modal-body ul li {
     font-size: 0.9rem;
-    margin-bottom: 0.5rem;
   }
   
   .btn-discord-full {
-    width: 100%;
-    padding: 1rem 1.5rem;
+    padding: var(--spacing-md) var(--spacing-lg);
     font-size: 1rem;
-    justify-content: center;
   }
 }
 
 /* =====================
-   Tablet Styles (768px - 1023px)
+   Tablet (768px - 1023px)
    ===================== */
 @media (min-width: 768px) and (max-width: 1023px) {
+  /* =====================
+     Navbar Tablet
+     ===================== */
   .nav-container {
-    padding: 0.5rem 1.5rem;
+    padding: var(--spacing-md) var(--spacing-lg);
   }
   
+  .nav-menu {
+    gap: var(--spacing-lg);
+  }
+  
+  /* =====================
+     Hero Section Tablet
+     ===================== */
   .hero {
-    padding: 6rem 2rem 2rem 2rem;
+    padding: 7rem var(--spacing-lg) var(--spacing-2xl);
   }
   
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
   }
   
   .hero-buttons {
-    gap: 1rem;
+    gap: var(--spacing-lg);
   }
   
   .btn-primary, .btn-secondary {
-    padding: 0.8rem 1.5rem;
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
   }
   
+  /* =====================
+     Sections Tablet
+     ===================== */
   .container {
-    padding: 0 2rem;
+    padding: 0 var(--spacing-lg);
   }
   
-  .about-content, .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-  
-  .chat-container {
-    height: 500px;
-  }
-  
-  .chat-sidebar {
-    width: 250px;
-  }
-  
-  .discord-content {
-    gap: 2rem;
-  }
-  
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .button-group {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .footer-content {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-}
-
-/* =====================
-   Large Mobile (480px - 767px)
-   ===================== */
-@media (min-width: 480px) and (max-width: 767px) {
-  .hero-title {
+  .section-header h2 {
     font-size: 2.2rem;
   }
   
-  .hero-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+  .section-header p {
+    font-size: 1.1rem;
   }
   
-  .btn-primary, .btn-secondary {
-    width: auto;
-    min-width: 200px;
+  /* =====================
+     About & Features Tablet
+     ===================== */
+  .about-content {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
   }
   
-  .about-content, .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+  .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
   }
   
+  .about-card, .feature-item {
+    padding: var(--spacing-xl);
+  }
+  
+  .card-icon, .feature-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 1.7rem;
+  }
+  
+  /* =====================
+     Chat Section Tablet
+     ===================== */
   .chat-container {
-    height: 60vh;
+    height: 550px;
   }
   
-  .action-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .chat-sidebar {
+    width: 300px;
   }
   
-  .button-group {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .chat-messages {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
   }
   
-  .btn-discord-invite, .btn-community, .btn-discord-login {
-    width: auto;
-    min-width: 200px;
+  .message {
+    gap: var(--spacing-md);
+  }
+  
+  .message-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .message-content {
+    font-size: 1rem;
+  }
+  
+  .message-text {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+  }
+  
+  .chat-input {
+    padding: var(--spacing-md);
+  }
+  
+  #chat-input {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  .btn-send {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1rem;
+    min-width: 80px;
+  }
+  
+  /* =====================
+     Discord Section Tablet
+     ===================== */
+  .discord-integration {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+  
+  .discord-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-2xl);
+  }
+  
+  .discord-status {
+    padding: var(--spacing-xl);
+  }
+  
+  .status-header i {
+    font-size: 2rem;
+  }
+  
+  .status-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .btn-discord-invite, .btn-community {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
+  }
+  
+  .btn-discord-login {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
+  }
+  
+  .bot-features {
+    padding: var(--spacing-xl);
+  }
+  
+  .bot-features h4 {
+    font-size: 1.3rem;
+  }
+  
+  .bot-features ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+  
+  .bot-features ul li {
+    padding: var(--spacing-lg);
+    font-size: 1rem;
+  }
+  
+  /* =====================
+     Customization Section Tablet
+     ===================== */
+  .customization {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+  
+  .customization-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-2xl);
+  }
+  
+  .theme-selector, .settings-panel {
+    padding: var(--spacing-xl);
+  }
+  
+  .theme-selector h3, .settings-panel h3 {
+    font-size: 1.3rem;
+  }
+  
+  .theme-option {
+    padding: var(--spacing-lg);
+    font-size: 1.1rem;
+  }
+  
+  .theme-preview {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .setting-item label {
+    font-size: 1.1rem;
+  }
+  
+  .setting-item select {
+    font-size: 1rem;
+    padding: var(--spacing-md);
+  }
+  
+  /* =====================
+     Footer Tablet
+     ===================== */
+  .footer {
+    padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-xl);
+  }
+  
+  .footer-content {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-2xl);
+  }
+  
+  .footer-section ul li a {
+    font-size: 1rem;
+  }
+  
+  /* =====================
+     Modal Tablet
+     ===================== */
+  .modal-content {
+    padding: var(--spacing-xl);
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .modal-body p {
+    font-size: 1.1rem;
+  }
+  
+  .modal-body ul li {
+    font-size: 1rem;
+  }
+  
+  .btn-discord-full {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
   }
 }
 
 /* =====================
-   Small Mobile (320px - 479px)
+   Desktop Small (1024px - 1279px)
    ===================== */
-@media (max-width: 479px) {
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav-container {
+    padding: var(--spacing-md) var(--spacing-xl);
+  }
+  
+  .hero {
+    padding: 8rem var(--spacing-xl) var(--spacing-2xl);
+  }
+  
+  .container {
+    padding: 0 var(--spacing-xl);
+  }
+  
+  .about-content {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+/* =====================
+   Desktop Large (1280px+)
+   ===================== */
+@media (min-width: 1280px) {
+  .nav-container {
+    padding: var(--spacing-md) var(--spacing-2xl);
+  }
+  
+  .hero {
+    padding: 8rem var(--spacing-2xl) var(--spacing-3xl);
+  }
+  
+  .container {
+    padding: 0 var(--spacing-2xl);
+  }
+  
+  .about-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =====================
+   Orientação Landscape Mobile
+   ===================== */
+@media (max-width: 767px) and (orientation: landscape) {
+  .hero {
+    padding: 4rem var(--spacing-md) var(--spacing-lg);
+    min-height: 100vh;
+  }
+  
   .hero-title {
     font-size: 1.8rem;
   }
@@ -623,69 +1197,19 @@
     font-size: 0.9rem;
   }
   
-  .section-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .about-card, .feature-item {
-    padding: 1rem;
-  }
-  
-  .card-icon, .feature-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
-  }
-  
-  .chat-container {
-    height: 50vh;
-  }
-  
-  .message {
-    padding: 0.6rem;
-  }
-  
-  .message-text {
-    font-size: 0.8rem;
-  }
-  
-  #chat-input {
-    font-size: 0.8rem;
-    padding: 0.6rem;
-  }
-  
-  .btn-send {
-    width: 36px;
-    height: 36px;
-    font-size: 0.8rem;
-  }
-}
-
-/* =====================
-   Landscape Mobile
-   ===================== */
-@media (max-width: 767px) and (orientation: landscape) {
-  .hero {
-    min-height: 100vh;
-    padding: 4rem 1rem 1rem 1rem;
-  }
-  
-  .hero-title {
-    font-size: 1.8rem;
-  }
-  
-  .chat-container {
-    height: 50vh;
-  }
-  
   .nav-menu {
-    height: calc(100vh - 50px);
     top: 50px;
+    height: calc(100vh - 50px);
+    padding: var(--spacing-md) 0;
+  }
+  
+  .chat-container {
+    height: 350px;
   }
 }
 
 /* =====================
-   Touch Device Optimizations
+   Touch Devices
    ===================== */
 @media (hover: none) and (pointer: coarse) {
   .btn-primary, .btn-secondary, .btn-discord, .btn-control, .btn-send {
@@ -702,6 +1226,8 @@
   
   .conversation-item {
     min-height: 44px;
+    display: flex;
+    align-items: center;
   }
   
   #chat-input {
@@ -709,7 +1235,7 @@
   }
   
   .message {
-    touch-action: manipulation;
+    min-height: 44px;
   }
 }
 
@@ -718,20 +1244,20 @@
    ===================== */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .nav-toggle span {
-    border-radius: 1px;
+    height: 2px;
   }
   
   .btn-control, .btn-send {
-    border-radius: 6px;
+    border-width: 1px;
   }
   
   .message {
-    border-radius: 8px;
+    border-width: 1px;
   }
 }
 
 /* =====================
-   Dark Mode Support
+   Dark Mode Preference
    ===================== */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -744,17 +1270,88 @@
    Reduced Motion
    ===================== */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
   .nav-menu {
     transition: none;
   }
   
   .chat-sidebar {
     transition: none;
+  }
+  
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-discord:hover,
+  .btn-control:hover,
+  .btn-send:hover,
+  .about-card:hover,
+  .feature-item:hover,
+  .conversation-item:hover {
+    transform: none;
+  }
+}
+
+/* =====================
+   Print Styles
+   ===================== */
+@media print {
+  .navbar,
+  .nav-toggle,
+  .chat-controls,
+  .chat-input,
+  .btn-send {
+    display: none !important;
+  }
+  
+  .hero {
+    padding: 2rem 0;
+    min-height: auto;
+  }
+  
+  .chat-container {
+    height: auto;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .chat-messages {
+    max-height: none;
+  }
+}
+
+/* =====================
+   Focus Management
+   ===================== */
+@media (prefers-reduced-motion: no-preference) {
+  .nav-link:focus,
+  .btn-primary:focus,
+  .btn-secondary:focus,
+  .btn-discord:focus,
+  .btn-control:focus,
+  .btn-send:focus,
+  .conversation-item:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* =====================
+   High Contrast Mode
+   ===================== */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: rgba(255, 255, 255, 0.3);
+    --color-text-muted: #CCCCCC;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-discord,
+  .btn-control,
+  .btn-send {
+    border-width: 2px;
+  }
+  
+  .message-text {
+    border-width: 2px;
   }
 } 
