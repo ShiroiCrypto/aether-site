@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Exclusão de Conversas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .test-section {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .delete-btn {
+            background: #e74c3c;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .conversation-item {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #444;
+        }
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log {
+            background: #000;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste - Exclusão de Conversas</h1>
+    
+    <div class="test-section">
+        <h2>1. Verificar Login</h2>
+        <button onclick="checkLogin()">Verificar Status de Login</button>
+        <div id="login-status" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Listar Conversas</h2>
+        <button onclick="listConversations()">Carregar Conversas</button>
+        <div id="conversations-list"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Criar Nova Conversa</h2>
+        <button onclick="createConversation()">Criar Conversa de Teste</button>
+        <div id="create-result" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Testar Exclusão</h2>
+        <p>Clique em "Deletar" em qualquer conversa acima para testar a exclusão.</p>
+        <div id="delete-result" class="log"></div>
+    </div>
+
+    <script>
+        function log(elementId, message) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `[${timestamp}] ${message}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        async function checkLogin() {
+            try {
+                const response = await fetch('/api/auth/session');
+                const data = await response.json();
+                log('login-status', `Status: ${data.isLoggedIn ? 'Logado' : 'Não logado'}`);
+                if (data.user) {
+                    log('login-status', `Usuário: ${data.user.username}`);
+                }
+            } catch (error) {
+                log('login-status', `Erro: ${error.message}`);
+            }
+        }
+
+        async function listConversations() {
+            try {
+                const response = await fetch('/api/conversations');
+                const data = await response.json();
+                
+                const container = document.getElementById('conversations-list');
+                container.innerHTML = '';
+                
+                if (data.conversations && data.conversations.length > 0) {
+                    data.conversations.forEach(conv => {
+                        const div = document.createElement('div');
+                        div.className = 'conversation-item';
+                        div.innerHTML = `
+                            <div class="conversation-header">
+                                <div>
+                                    <strong>${conv.title}</strong>
+                                    <br>
+                                    <small>ID: ${conv._id}</small>
+                                    <br>
+                                    <small>Mensagens: ${conv.messages ? conv.messages.length : 0}</small>
+                                </div>
+                                <button class="delete-btn" onclick="deleteConversation('${conv._id}')">
+                                    Deletar
+                                </button>
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<p>Nenhuma conversa encontrada.</p>';
+                }
+            } catch (error) {
+                log('delete-result', `Erro ao listar: ${error.message}`);
+            }
+        }
+
+        async function createConversation() {
+            try {
+                const response = await fetch('/api/conversations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        title: `Teste ${new Date().toLocaleTimeString()}` 
+                    })
+                });
+                
+                const data = await response.json();
+                log('create-result', `Conversa criada: ${data.conversationId}`);
+                
+                // Recarregar lista
+                setTimeout(listConversations, 1000);
+            } catch (error) {
+                log('create-result', `Erro: ${error.message}`);
+            }
+        }
+
+        async function deleteConversation(conversationId) {
+            if (!confirm('Tem certeza que deseja deletar esta conversa?')) return;
+            
+            try {
+                log('delete-result', `Tentando deletar: ${conversationId}`);
+                
+                const response = await fetch(`/api/conversations/${conversationId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    log('delete-result', '✅ Conversa deletada com sucesso!');
+                    // Recarregar lista após 1 segundo
+                    setTimeout(listConversations, 1000);
+                } else {
+                    const errorData = await response.json();
+                    log('delete-result', `❌ Erro: ${errorData.error || 'Erro desconhecido'}`);
+                }
+            } catch (error) {
+                log('delete-result', `❌ Erro: ${error.message}`);
+            }
+        }
+
+        // Verificar login ao carregar a página
+        window.onload = function() {
+            checkLogin();
+        };
+    </script>
+</body>
+</html> 

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Memória e Contexto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .test-section {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .chat-container {
+            display: flex;
+            height: 400px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chat-sidebar {
+            width: 300px;
+            background: #2a2a2a;
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #1a1a1a;
+        }
+        .chat-input {
+            padding: 10px;
+            background: #333;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            background: #444;
+            color: #fff;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .user-message {
+            background: #4a90e2;
+            margin-left: 20%;
+        }
+        .aether-message {
+            background: #333;
+            margin-right: 20%;
+        }
+        .conversation-item {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+        }
+        .conversation-item:hover {
+            background: #3a3a3a;
+        }
+        .conversation-item.active {
+            background: #4a90e2;
+        }
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .test-btn {
+            background: #e67e22;
+        }
+        .test-btn:hover {
+            background: #d35400;
+        }
+        .log {
+            background: #000;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        .memory-test {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .memory-test h4 {
+            margin: 0 0 10px 0;
+            color: #4a90e2;
+        }
+        .test-steps {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .test-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠 Teste - Memória e Contexto</h1>
+    
+    <div class="test-section">
+        <h2>1. Testes de Memória</h2>
+        
+        <div class="memory-test">
+            <h4>🌌 Teste 1: Nome do Usuário</h4>
+            <div class="test-steps">
+                <ol>
+                    <li>Digite: "Meu nome é [seu nome]"</li>
+                    <li>Depois pergunte: "Qual é o meu nome?"</li>
+                    <li>A Aether deve responder com seu nome</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="memory-test">
+            <h4>📚 Teste 2: Preferências</h4>
+            <div class="test-steps">
+                <ol>
+                    <li>Digite: "Eu gosto de [algo específico]"</li>
+                    <li>Depois pergunte: "O que eu disse que gosto?"</li>
+                    <li>A Aether deve referenciar o que você mencionou</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="memory-test">
+            <h4>🎯 Teste 3: Informações Pessoais</h4>
+            <div class="test-steps">
+                <ol>
+                    <li>Digite: "Eu tenho [idade] anos"</li>
+                    <li>Depois pergunte: "Quantos anos eu tenho?"</li>
+                    <li>A Aether deve lembrar sua idade</li>
+                </ol>
+            </div>
+        </div>
+        
+        <button onclick="runMemoryTest()" class="test-btn">🧪 Executar Teste Automático</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Chat com Debug de Contexto</h2>
+        <div class="chat-container">
+            <div class="chat-sidebar">
+                <div style="padding: 15px; border-bottom: 1px solid #444;">
+                    <h3>🌌 Conversas</h3>
+                    <button onclick="createTestConversation()">+ Nova</button>
+                </div>
+                <div id="conversations-list" style="flex: 1; overflow-y: auto;"></div>
+            </div>
+            
+            <div class="chat-main">
+                <div class="chat-header">
+                    <span>🌌 Aether - Teste de Memória</span>
+                    <div>
+                        <button onclick="showContextDebug()" class="test-btn">🔍 Debug Contexto</button>
+                        <button onclick="clearChat()">🗑️ Limpar</button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div style="color: #888; text-align: center; padding: 20px;">
+                        Selecione uma conversa e comece a testar a memória
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Digite sua mensagem..." maxlength="500">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Logs de Debug</h2>
+        <button onclick="clearLogs()">Limpar Logs</button>
+        <div id="debug-log" class="log"></div>
+    </div>
+
+    <script>
+        let currentConversationId = null;
+        let testStep = 0;
+
+        function log(elementId, message) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `[${timestamp}] ${message}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        async function loadConversations() {
+            try {
+                const response = await fetch('/api/conversations');
+                const data = await response.json();
+                
+                const container = document.getElementById('conversations-list');
+                container.innerHTML = '';
+                
+                if (data.conversations && data.conversations.length > 0) {
+                    data.conversations.forEach(conv => {
+                        const div = document.createElement('div');
+                        div.className = 'conversation-item';
+                        div.innerHTML = `
+                            <div><strong>${conv.title}</strong></div>
+                            <div style="font-size: 0.8em; color: #888;">
+                                ${conv.messages ? conv.messages.length : 0} mensagens
+                            </div>
+                        `;
+                        div.onclick = () => loadConversation(conv._id);
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<div style="padding: 10px; color: #888;">Nenhuma conversa</div>';
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao carregar conversas: ${error.message}`);
+            }
+        }
+
+        async function loadConversation(conversationId) {
+            try {
+                log('debug-log', `🔄 Carregando conversa: ${conversationId}`);
+                
+                // Atualizar UI
+                document.querySelectorAll('.conversation-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.conversation-item').classList.add('active');
+                
+                // Carregar conversa do banco
+                const response = await fetch(`/api/conversations/${conversationId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.conversation && data.conversation.messages) {
+                        currentConversationId = conversationId;
+                        displayMessages(data.conversation.messages);
+                        log('debug-log', `✅ Conversa carregada: ${data.conversation.messages.length} mensagens`);
+                    }
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao carregar conversa: ${error.message}`);
+            }
+        }
+
+        function displayMessages(messages) {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `message ${msg.sender === 'user' ? 'user-message' : 'aether-message'}`;
+                div.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">
+                        ${msg.sender === 'user' ? '👤 Você' : '🌌 Aether'}
+                    </div>
+                    <div>${msg.text}</div>
+                `;
+                container.appendChild(div);
+            });
+            
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            if (!currentConversationId) {
+                log('debug-log', '❌ Selecione uma conversa primeiro');
+                return;
+            }
+            
+            // Adicionar mensagem do usuário
+            addMessageToUI(message, 'user');
+            input.value = '';
+            
+            // Enviar para a API
+            try {
+                log('debug-log', `📤 Enviando mensagem: "${message}"`);
+                
+                // Carregar contexto completo
+                const conversationResponse = await fetch(`/api/conversations/${currentConversationId}`);
+                let history = [];
+                
+                if (conversationResponse.ok) {
+                    const conversationData = await conversationResponse.json();
+                    if (conversationData.conversation && conversationData.conversation.messages) {
+                        history = conversationData.conversation.messages
+                            .filter(msg => msg.text && msg.text.trim())
+                            .map(msg => ({
+                                role: msg.sender === 'user' ? 'user' : 'model',
+                                parts: [{ text: msg.text.trim() }]
+                            }));
+                        
+                        log('debug-log', `📚 Contexto enviado: ${history.length} mensagens`);
+                    }
+                }
+                
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        history: history,
+                        conversationId: currentConversationId
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addMessageToUI(data.response, 'aether');
+                    log('debug-log', `📥 Resposta recebida: ${data.response.substring(0, 50)}...`);
+                    
+                    // Recarregar conversas para atualizar a lista
+                    loadConversations();
+                } else {
+                    throw new Error('Erro na API');
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao enviar mensagem: ${error.message}`);
+                addMessageToUI('❌ Erro ao processar mensagem', 'aether');
+            }
+        }
+
+        function addMessageToUI(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `message ${sender === 'user' ? 'user-message' : 'aether-message'}`;
+            div.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 5px;">
+                    ${sender === 'user' ? '👤 Você' : '🌌 Aether'}
+                </div>
+                <div>${text}</div>
+            `;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function createTestConversation() {
+            try {
+                const title = prompt('Título da conversa:', 'Teste Memória ' + new Date().toLocaleTimeString());
+                if (!title) return;
+                
+                const response = await fetch('/api/conversations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title })
+                });
+                
+                const data = await response.json();
+                if (data.conversationId) {
+                    log('debug-log', `✅ Conversa criada: ${data.conversationId}`);
+                    loadConversations();
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao criar conversa: ${error.message}`);
+            }
+        }
+
+        async function showContextDebug() {
+            if (!currentConversationId) {
+                log('debug-log', '❌ Selecione uma conversa primeiro');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/conversations/${currentConversationId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.conversation && data.conversation.messages) {
+                        log('debug-log', '🔍 DEBUG DO CONTEXTO:');
+                        log('debug-log', `📊 Total de mensagens: ${data.conversation.messages.length}`);
+                        
+                        data.conversation.messages.forEach((msg, index) => {
+                            log('debug-log', `${index + 1}. [${msg.sender}]: ${msg.text.substring(0, 100)}...`);
+                        });
+                    }
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao carregar contexto: ${error.message}`);
+            }
+        }
+
+        async function runMemoryTest() {
+            if (!currentConversationId) {
+                log('debug-log', '❌ Selecione uma conversa primeiro');
+                return;
+            }
+            
+            log('debug-log', '🧪 Iniciando teste automático de memória...');
+            
+            const testMessages = [
+                "Meu nome é Teste Usuário",
+                "Qual é o meu nome?",
+                "Eu gosto de programação em JavaScript",
+                "O que eu disse que gosto?",
+                "Eu tenho 25 anos",
+                "Quantos anos eu tenho?"
+            ];
+            
+            for (let i = 0; i < testMessages.length; i++) {
+                const message = testMessages[i];
+                log('debug-log', `🧪 Teste ${i + 1}: "${message}"`);
+                
+                // Simular envio
+                addMessageToUI(message, 'user');
+                
+                // Aguardar um pouco antes do próximo teste
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+
+        function clearChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">Chat limpo</div>';
+        }
+
+        function clearLogs() {
+            document.getElementById('debug-log').innerHTML = '';
+        }
+
+        // Event listener para Enter no input
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Carregar conversas ao iniciar
+        window.onload = function() {
+            loadConversations();
+        };
+    </script>
+</body>
+</html> 

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Input - Aether</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        input, button {
+            padding: 1rem;
+            margin: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        button {
+            background: #00d4ff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #00b4d8;
+        }
+        .log {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste de Input</h1>
+        <p>Teste se o input está funcionando corretamente:</p>
+        
+        <input type="text" id="test-input" placeholder="Digite algo aqui..." maxlength="500">
+        <button id="test-button">Enviar</button>
+        <button id="clear-log">Limpar Log</button>
+        
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        const testInput = document.getElementById('test-input');
+        const testButton = document.getElementById('test-button');
+        const clearLog = document.getElementById('clear-log');
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML += `[${time}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // Teste de input
+        testInput.addEventListener('input', (e) => {
+            addLog(`Input alterado: "${e.target.value}" (${e.target.value.length} caracteres)`);
+        });
+        
+        // Teste de keypress
+        testInput.addEventListener('keypress', (e) => {
+            addLog(`Tecla pressionada: ${e.key}`);
+        });
+        
+        // Teste de clique no botão
+        testButton.addEventListener('click', () => {
+            addLog(`Botão clicado! Valor: "${testInput.value}"`);
+        });
+        
+        // Limpar log
+        clearLog.addEventListener('click', () => {
+            log.innerHTML = '';
+        });
+        
+        // Focar no input
+        testInput.focus();
+        addLog('Página carregada. Input focado.');
+    </script>
+</body>
+</html> 

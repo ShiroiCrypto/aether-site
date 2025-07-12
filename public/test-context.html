@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Contexto e Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .test-section {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .test-btn {
+            background: #e67e22;
+        }
+        .test-btn:hover {
+            background: #d35400;
+        }
+        .log {
+            background: #000;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .chat-container {
+            display: flex;
+            height: 400px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chat-sidebar {
+            width: 300px;
+            background: #2a2a2a;
+            border-right: 1px solid #333;
+            transition: width 0.3s ease;
+        }
+        .chat-sidebar.collapsed {
+            width: 0;
+            overflow: hidden;
+        }
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #1a1a1a;
+        }
+        .chat-input {
+            padding: 10px;
+            background: #333;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            background: #444;
+            color: #fff;
+        }
+        .conversation-item {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+        }
+        .conversation-item:hover {
+            background: #3a3a3a;
+        }
+        .conversation-item.active {
+            background: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste - Contexto e Menu de Conversas</h1>
+    
+    <div class="test-section">
+        <h2>1. Verificar Login</h2>
+        <button onclick="checkLogin()">Verificar Status de Login</button>
+        <div id="login-status" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Testar Chat com Contexto</h2>
+        <div class="chat-container">
+            <div class="chat-sidebar" id="test-sidebar">
+                <div style="padding: 10px; border-bottom: 1px solid #444;">
+                    <h3>🌌 Conversas</h3>
+                    <button onclick="createTestConversation()">+ Nova</button>
+                </div>
+                <div id="test-conversations-list"></div>
+            </div>
+            
+            <div class="chat-main">
+                <div class="chat-header">
+                    <span>🌌 Aether - Teste de Contexto</span>
+                    <button onclick="toggleTestSidebar()">📱 Toggle Menu</button>
+                </div>
+                
+                <div class="chat-messages" id="test-chat-messages">
+                    <div style="color: #888; text-align: center; padding: 20px;">
+                        Faça login e selecione uma conversa para testar o contexto
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="test-chat-input" placeholder="Digite uma mensagem..." maxlength="500">
+                    <button onclick="sendTestMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Testes de Funcionalidade</h2>
+        <button class="test-btn" onclick="testContextLoading()">Testar Carregamento de Contexto</button>
+        <button class="test-btn" onclick="testSidebarToggle()">Testar Toggle do Menu</button>
+        <button class="test-btn" onclick="testConversationCreation()">Testar Criação de Conversa</button>
+        <div id="test-results" class="log"></div>
+    </div>
+
+    <script>
+        let currentConversationId = null;
+        let testMessages = [];
+
+        function log(elementId, message) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `[${timestamp}] ${message}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        async function checkLogin() {
+            try {
+                const response = await fetch('/api/auth/session');
+                const data = await response.json();
+                log('login-status', `Status: ${data.isLoggedIn ? 'Logado' : 'Não logado'}`);
+                if (data.user) {
+                    log('login-status', `Usuário: ${data.user.username}`);
+                    loadTestConversations();
+                }
+            } catch (error) {
+                log('login-status', `Erro: ${error.message}`);
+            }
+        }
+
+        async function loadTestConversations() {
+            try {
+                const response = await fetch('/api/conversations');
+                const data = await response.json();
+                
+                const container = document.getElementById('test-conversations-list');
+                container.innerHTML = '';
+                
+                if (data.conversations && data.conversations.length > 0) {
+                    data.conversations.forEach(conv => {
+                        const div = document.createElement('div');
+                        div.className = 'conversation-item';
+                        div.innerHTML = `
+                            <div><strong>${conv.title}</strong></div>
+                            <div style="font-size: 0.8em; color: #888;">
+                                ${conv.messages ? conv.messages.length : 0} mensagens
+                            </div>
+                        `;
+                        div.onclick = () => loadTestConversation(conv._id);
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<div style="padding: 10px; color: #888;">Nenhuma conversa</div>';
+                }
+            } catch (error) {
+                log('test-results', `Erro ao carregar conversas: ${error.message}`);
+            }
+        }
+
+        async function loadTestConversation(conversationId) {
+            try {
+                log('test-results', `Carregando conversa: ${conversationId}`);
+                
+                // Atualizar UI
+                document.querySelectorAll('.conversation-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.conversation-item').classList.add('active');
+                
+                // Carregar conversa do banco
+                const response = await fetch(`/api/conversations/${conversationId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.conversation && data.conversation.messages) {
+                        currentConversationId = conversationId;
+                        testMessages = data.conversation.messages;
+                        displayTestMessages();
+                        log('test-results', `✅ Contexto carregado: ${testMessages.length} mensagens`);
+                    }
+                }
+            } catch (error) {
+                log('test-results', `❌ Erro ao carregar conversa: ${error.message}`);
+            }
+        }
+
+        function displayTestMessages() {
+            const container = document.getElementById('test-chat-messages');
+            container.innerHTML = '';
+            
+            testMessages.forEach(msg => {
+                const div = document.createElement('div');
+                div.style.margin = '10px 0';
+                div.style.padding = '10px';
+                div.style.borderRadius = '4px';
+                div.style.backgroundColor = msg.sender === 'user' ? '#4a90e2' : '#333';
+                div.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">
+                        ${msg.sender === 'user' ? '👤 Você' : '🌌 Aether'}
+                    </div>
+                    <div>${msg.text}</div>
+                `;
+                container.appendChild(div);
+            });
+            
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendTestMessage() {
+            const input = document.getElementById('test-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            if (!currentConversationId) {
+                log('test-results', '❌ Selecione uma conversa primeiro');
+                return;
+            }
+            
+            // Adicionar mensagem do usuário
+            testMessages.push({
+                text: message,
+                sender: 'user',
+                timestamp: Date.now()
+            });
+            
+            displayTestMessages();
+            input.value = '';
+            
+            // Simular resposta da IA
+            setTimeout(() => {
+                testMessages.push({
+                    text: `🌌 Resposta simulada para: "${message}"`,
+                    sender: 'aether',
+                    timestamp: Date.now()
+                });
+                displayTestMessages();
+            }, 1000);
+        }
+
+        function toggleTestSidebar() {
+            const sidebar = document.getElementById('test-sidebar');
+            sidebar.classList.toggle('collapsed');
+            log('test-results', `🔄 Sidebar ${sidebar.classList.contains('collapsed') ? 'colapsada' : 'expandida'}`);
+        }
+
+        async function createTestConversation() {
+            try {
+                const title = prompt('Título da conversa:', 'Teste ' + new Date().toLocaleTimeString());
+                if (!title) return;
+                
+                const response = await fetch('/api/conversations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title })
+                });
+                
+                const data = await response.json();
+                if (data.conversationId) {
+                    log('test-results', `✅ Conversa criada: ${data.conversationId}`);
+                    loadTestConversations();
+                }
+            } catch (error) {
+                log('test-results', `❌ Erro ao criar conversa: ${error.message}`);
+            }
+        }
+
+        function testContextLoading() {
+            log('test-results', '🧪 Testando carregamento de contexto...');
+            if (currentConversationId) {
+                log('test-results', `✅ Contexto ativo: ${currentConversationId} (${testMessages.length} mensagens)`);
+            } else {
+                log('test-results', '❌ Nenhuma conversa selecionada');
+            }
+        }
+
+        function testSidebarToggle() {
+            log('test-results', '🧪 Testando toggle do menu...');
+            toggleTestSidebar();
+        }
+
+        function testConversationCreation() {
+            log('test-results', '🧪 Testando criação de conversa...');
+            createTestConversation();
+        }
+
+        // Event listener para Enter no input
+        document.getElementById('test-chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendTestMessage();
+            }
+        });
+
+        // Verificar login ao carregar
+        window.onload = function() {
+            checkLogin();
+        };
+    </script>
+</body>
+</html> 

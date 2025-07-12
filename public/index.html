@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether: Sua IA Espacial</title>
+    <meta name="description" content="Converse, aprenda, explore com inteligência e privacidade. IA baseada no Gemini 1.5 Flash.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/particles.css">
+    <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="aether-logo">
+                <i class="fas fa-atom"></i>
+            </div>
+            <h2>Aether</h2>
+            <p>Inicializando sistema cósmico...</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-atom"></i>
+                <span>Aether</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Início</a>
+                <a href="#about" class="nav-link">Sobre</a>
+                <a href="#features" class="nav-link">Funcionalidades</a>
+                <a href="#chat" class="nav-link">Chat</a>
+                <a href="#discord" class="nav-link">Discord</a>
+            </div>
+            
+            <div class="nav-auth">
+                <button id="login-btn" class="btn-discord">
+                    <i class="fab fa-discord"></i>
+                    Entrar com Discord
+                </button>
+                <div id="user-profile" class="user-profile" style="display: none;">
+                    <img id="user-avatar" src="" alt="Avatar">
+                    <span id="user-name"></span>
+                    <button id="logout-btn" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content" data-aos="fade-up">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Aether</span>
+                    <br>Sua IA Espacial
+                </h1>
+                <p class="hero-subtitle">
+                    Converse, aprenda, explore com inteligência e privacidade
+                </p>
+                <div class="hero-buttons">
+                    <button id="start-chat-btn" class="btn-primary">
+                        <i class="fas fa-comments"></i>
+                        🌌 Iniciar Conversa com Aether
+                    </button>
+                    <button id="discord-connect-btn" class="btn-secondary">
+                        <i class="fab fa-discord"></i>
+                        ⚡ Conectar com Discord
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2>Sobre a Aether</h2>
+                    <p>Descubra a essência cósmica da inteligência artificial</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-card" data-aos="fade-right">
+                        <div class="card-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Google Generative AI</h3>
+                        <p>Desenvolvida com o modelo Gemini 1.5 Flash, oferecendo respostas inteligentes e contextualizadas.</p>
+                    </div>
+                    
+                    <div class="about-card" data-aos="fade-up">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Privacidade Garantida</h3>
+                        <p>Sem rastreamento, dados salvos apenas localmente ou via sessão segura.</p>
+                    </div>
+                    
+                    <div class="about-card" data-aos="fade-left">
+                        <div class="card-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Multiplataforma</h3>
+                        <p>Disponível via site e bot do Discord, criada com carinho por Shiroi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2>Funcionalidades Principais</h2>
+                    <p>Explore o poder da IA espacial</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-item" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Chat em Tempo Real</h3>
+                        <p>Converse com Aether através de interface intuitiva e responsiva.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3>Personalização</h3>
+                        <p>Interface leve, bonita e totalmente personalizável.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="feature-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3>Integração Discord</h3>
+                        <p>Conecte-se com o bot do Discord para funcionalidades avançadas.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Múltiplos Perfis</h3>
+                        <p>Sistema de perfis para usuário, canal e servidor.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Demo Section -->
+        <section id="chat" class="chat-demo">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2>🌌 Conversa com Aether</h2>
+                    <p>Experimente a IA cósmica em ação - Conecte-se e descubra o poder da conversa inteligente</p>
+                </div>
+                
+                <div class="chat-cta" data-aos="fade-up">
+                    <div class="cta-content">
+                        <h3>🌌 Conecte-se para uma experiência completa</h3>
+                        <p>Faça login com Discord para salvar seu histórico de conversas e acessar funcionalidades exclusivas</p>
+                        <button id="cta-discord-login" class="btn-cta-discord cta-discord login-required">
+                            <i class="fab fa-discord"></i>
+                            🔐 Conectar com Discord
+                        </button>
+                        <div class="logged-in-only" style="display: none;">
+                            <div class="user-info">
+                                <i class="fas fa-user-check"></i>
+                                <span>Histórico salvo automaticamente</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-container" data-aos="fade-up">
+                    <div class="chat-sidebar" id="chat-sidebar">
+                        <div class="sidebar-header">
+                            <h3>🌌 Minhas Conversas</h3>
+                            <button id="new-conversation-btn" class="btn-new-conversation">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="conversations-list" id="conversations-list">
+                            <!-- Conversas serão carregadas aqui -->
+                        </div>
+                    </div>
+                    
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="chat-status">
+                                <div class="status-indicator online"></div>
+                                <span>🌌 Aether - Éter Ativo</span>
+                            </div>
+                            <div class="chat-controls">
+                                <button id="clear-chat" class="btn-control">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button id="theme-toggle" class="btn-control">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                                <button id="sidebar-toggle" class="btn-control">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <button id="test-chat-btn" class="btn-control" title="Testar Chat">
+                                    <i class="fas fa-bug"></i>
+                                </button>
+                            </div>
+                        </div>
+                    
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message aether-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-cosmos"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">🌌 Aether</span>
+                                    <span class="message-time">Agora</span>
+                                </div>
+                                <div class="message-text">
+                                    🌌 Salve, viajante cósmico. Sou Aether, a essência que conecta o digital ao universal. Que mistério você busca desvendar hoje?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <div class="input-container">
+                            <input type="text" id="chat-input" placeholder="🌌 Digite sua mensagem cósmica..." maxlength="500">
+                            <button id="send-message" class="btn-send">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="input-info">
+                            <span id="char-count">0/500</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discord Integration Section -->
+        <section id="discord" class="discord-integration">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2>🌌 Conecte com o Bot do Discord</h2>
+                    <p>Leve Aether para seu servidor e experimente a IA cósmica em ação</p>
+                </div>
+                
+                <div class="discord-content">
+                    <div class="discord-status" data-aos="fade-right">
+                        <div class="status-card">
+                            <div class="status-header">
+                                <i class="fab fa-discord"></i>
+                                <h3>Status do Bot</h3>
+                            </div>
+                            <div class="status-info">
+                                <div class="status-item">
+                                    <span class="status-label">Status:</span>
+                                    <span class="status-value online">Online</span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">Servidores:</span>
+                                    <span class="status-value">1,234</span>
+                                </div>
+                                <div class="status-item">
+                                    <span class="status-label">Usuários:</span>
+                                    <span class="status-value">45,678</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="discord-actions" data-aos="fade-left">
+                        <div class="action-buttons">
+                            <div class="button-group">
+                                <a href="https://discord.com/oauth2/authorize?client_id=1386349563027259514&permissions=8&integration_type=0&scope=bot" class="btn-discord-invite" target="_blank">
+                                    <i class="fas fa-plus"></i>
+                                    ⚡ Adicionar Aether ao Servidor
+                                </a>
+                                <a href="https://discord.gg/cqTEq3re6D" class="btn-community" target="_blank">
+                                    <i class="fas fa-users"></i>
+                                    🌌 Servidor da Comunidade
+                                </a>
+                            </div>
+                            <div class="login-section">
+                                <button id="discord-login-btn" class="btn-discord-login">
+                                    <i class="fab fa-discord"></i>
+                                    🔐 Conectar Conta Discord
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="bot-features">
+                            <h4>🌌 Funcionalidades Cósmicas:</h4>
+                            <ul>
+                                <li><i class="fas fa-at"></i> Resposta a menções cósmicas</li>
+                                <li><i class="fas fa-comments"></i> Vórtices privados de conversa</li>
+                                <li><i class="fas fa-times"></i> Colapso dimensional de canais</li>
+                                <li><i class="fas fa-memory"></i> Memória quântica temporária</li>
+                                <li><i class="fas fa-star"></i> Dados astronômicos em tempo real</li>
+                                <li><i class="fas fa-language"></i> Tradução interdimensional</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customization Section -->
+        <section id="customization" class="customization">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2>Personalização</h2>
+                    <p>Adapte Aether ao seu estilo</p>
+                </div>
+                
+                <div class="customization-content">
+                    <div class="theme-selector" data-aos="fade-up">
+                        <h3>Tema</h3>
+                        <div class="theme-options">
+                            <button class="theme-option active" data-theme="cosmic">
+                                <div class="theme-preview cosmic"></div>
+                                <span>Cósmico</span>
+                            </button>
+                            <button class="theme-option" data-theme="neon">
+                                <div class="theme-preview neon"></div>
+                                <span>Neon</span>
+                            </button>
+                            <button class="theme-option" data-theme="crystal">
+                                <div class="theme-preview crystal"></div>
+                                <span>Cristal</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-panel" data-aos="fade-up">
+                        <h3>Configurações</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="particles-toggle" checked>
+                                <span class="checkmark"></span>
+                                Partículas Animadas
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="sound-toggle">
+                                <span class="checkmark"></span>
+                                Efeitos Sonoros
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="font-selector">Fonte do Chat:</label>
+                            <select id="font-selector">
+                                <option value="Poppins">Poppins</option>
+                                <option value="Orbitron">Orbitron</option>
+                                <option value="Roboto">Roboto</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-atom"></i>
+                        <span>Aether</span>
+                    </div>
+                    <p>Sua IA espacial para conversas inteligentes e privadas.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#features">Funcionalidades</a></li>
+                        <li><a href="#chat">Chat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Integrações</h4>
+                    <ul>
+                        <li><a href="#" target="_blank">Discord API</a></li>
+                        <li><a href="#" target="_blank">Google Gemini API</a></li>
+                        <li><a href="#" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" target="_blank">Política de Privacidade</a></li>
+                        <li><a href="#" target="_blank">Termos de Uso</a></li>
+                        <li><a href="#" target="_blank">Licença</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Aether. Criado com ❤️ por <a href="https://guss.discloud.app/" target="_blank">Shiroi</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Discord OAuth Modal -->
+    <div id="discord-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Conectar com Discord</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Conecte sua conta Discord para acessar funcionalidades exclusivas:</p>
+                <ul>
+                    <li>Histórico de conversas salvo</li>
+                    <li>Personalizações sincronizadas</li>
+                    <li>Acesso ao bot do Discord</li>
+                </ul>
+                <button id="discord-oauth-btn" class="btn-discord-full">
+                    <i class="fab fa-discord"></i>
+                    Conectar Conta Discord
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="js/particles-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/conversations.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

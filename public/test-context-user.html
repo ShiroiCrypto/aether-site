@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Contexto e Usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .test-section {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .user-info {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .user-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .chat-container {
+            display: flex;
+            height: 500px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chat-sidebar {
+            width: 300px;
+            background: #2a2a2a;
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #1a1a1a;
+        }
+        .chat-input {
+            padding: 10px;
+            background: #333;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            background: #444;
+            color: #fff;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .user-message {
+            background: #4a90e2;
+            margin-left: 20%;
+        }
+        .aether-message {
+            background: #333;
+            margin-right: 20%;
+        }
+        .conversation-item {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+        }
+        .conversation-item:hover {
+            background: #3a3a3a;
+        }
+        .conversation-item.active {
+            background: #4a90e2;
+        }
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .test-btn {
+            background: #e67e22;
+        }
+        .test-btn:hover {
+            background: #d35400;
+        }
+        .log {
+            background: #000;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 150px;
+            overflow-y: auto;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        .context-test {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .context-test h4 {
+            margin: 0 0 10px 0;
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste - Contexto e Informações do Usuário</h1>
+    
+    <div class="test-section">
+        <h2>1. Informações do Usuário Discord</h2>
+        <button onclick="loadUserInfo()">Carregar Informações do Usuário</button>
+        <div id="user-info" class="user-info" style="display: none;">
+            <!-- Informações do usuário serão carregadas aqui -->
+        </div>
+        <div id="user-log" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Teste de Contexto e Memória</h2>
+        <div class="context-test">
+            <h4>🌌 Teste de Memória</h4>
+            <p>1. Diga seu nome para a Aether</p>
+            <p>2. Depois pergunte: "Qual é o meu nome?"</p>
+            <p>3. A Aether deve lembrar e responder corretamente</p>
+        </div>
+        
+        <div class="context-test">
+            <h4>📚 Teste de Contexto</h4>
+            <p>1. Mencione algo específico (ex: "Eu gosto de programação")</p>
+            <p>2. Depois pergunte: "O que eu disse que gosto?"</p>
+            <p>3. A Aether deve referenciar o que você mencionou antes</p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Chat com Contexto Completo</h2>
+        <div class="chat-container">
+            <div class="chat-sidebar">
+                <div style="padding: 15px; border-bottom: 1px solid #444;">
+                    <h3>🌌 Conversas</h3>
+                    <button onclick="createTestConversation()">+ Nova</button>
+                </div>
+                <div id="conversations-list" style="flex: 1; overflow-y: auto;"></div>
+            </div>
+            
+            <div class="chat-main">
+                <div class="chat-header">
+                    <span>🌌 Aether - Teste de Contexto e Usuário</span>
+                    <div>
+                        <button onclick="testContextMemory()" class="test-btn">🧠 Testar Memória</button>
+                        <button onclick="clearChat()">🗑️ Limpar</button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div style="color: #888; text-align: center; padding: 20px;">
+                        Faça login e comece a conversar para testar o contexto
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Digite sua mensagem..." maxlength="500">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Logs de Debug</h2>
+        <button onclick="clearLogs()">Limpar Logs</button>
+        <div id="debug-log" class="log"></div>
+    </div>
+
+    <script>
+        let currentConversationId = null;
+        let currentUser = null;
+
+        function log(elementId, message) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `[${timestamp}] ${message}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        async function loadUserInfo() {
+            try {
+                log('user-log', '🔍 Carregando informações do usuário...');
+                
+                const response = await fetch('/api/user/info');
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    
+                    const userInfoDiv = document.getElementById('user-info');
+                    userInfoDiv.innerHTML = `
+                        <div style="display: flex; align-items: center;">
+                            ${currentUser.avatarUrl ? `<img src="${currentUser.avatarUrl}" class="user-avatar" alt="Avatar">` : ''}
+                            <div>
+                                <h3>${currentUser.username}</h3>
+                                <p><strong>ID:</strong> ${currentUser.id}</p>
+                                <p><strong>Email:</strong> ${currentUser.email || 'Não disponível'}</p>
+                                <p><strong>Avatar:</strong> ${currentUser.avatar ? 'Sim' : 'Não'}</p>
+                            </div>
+                        </div>
+                    `;
+                    userInfoDiv.style.display = 'block';
+                    
+                    log('user-log', `✅ Usuário carregado: ${currentUser.username} (${currentUser.id})`);
+                    loadConversations();
+                } else {
+                    log('user-log', '❌ Usuário não autenticado');
+                }
+            } catch (error) {
+                log('user-log', `❌ Erro: ${error.message}`);
+            }
+        }
+
+        async function loadConversations() {
+            try {
+                const response = await fetch('/api/conversations');
+                const data = await response.json();
+                
+                const container = document.getElementById('conversations-list');
+                container.innerHTML = '';
+                
+                if (data.conversations && data.conversations.length > 0) {
+                    data.conversations.forEach(conv => {
+                        const div = document.createElement('div');
+                        div.className = 'conversation-item';
+                        div.innerHTML = `
+                            <div><strong>${conv.title}</strong></div>
+                            <div style="font-size: 0.8em; color: #888;">
+                                ${conv.messages ? conv.messages.length : 0} mensagens
+                            </div>
+                        `;
+                        div.onclick = () => loadConversation(conv._id);
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<div style="padding: 10px; color: #888;">Nenhuma conversa</div>';
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao carregar conversas: ${error.message}`);
+            }
+        }
+
+        async function loadConversation(conversationId) {
+            try {
+                log('debug-log', `🔄 Carregando conversa: ${conversationId}`);
+                
+                // Atualizar UI
+                document.querySelectorAll('.conversation-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.conversation-item').classList.add('active');
+                
+                // Carregar conversa do banco
+                const response = await fetch(`/api/conversations/${conversationId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.conversation && data.conversation.messages) {
+                        currentConversationId = conversationId;
+                        displayMessages(data.conversation.messages);
+                        log('debug-log', `✅ Conversa carregada: ${data.conversation.messages.length} mensagens`);
+                    }
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao carregar conversa: ${error.message}`);
+            }
+        }
+
+        function displayMessages(messages) {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `message ${msg.sender === 'user' ? 'user-message' : 'aether-message'}`;
+                div.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">
+                        ${msg.sender === 'user' ? '👤 Você' : '🌌 Aether'}
+                    </div>
+                    <div>${msg.text}</div>
+                `;
+                container.appendChild(div);
+            });
+            
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            if (!currentConversationId) {
+                log('debug-log', '❌ Selecione uma conversa primeiro');
+                return;
+            }
+            
+            // Adicionar mensagem do usuário
+            addMessageToUI(message, 'user');
+            input.value = '';
+            
+            // Enviar para a API
+            try {
+                log('debug-log', `📤 Enviando mensagem: "${message}"`);
+                
+                // Carregar contexto completo
+                const conversationResponse = await fetch(`/api/conversations/${currentConversationId}`);
+                let history = [];
+                
+                if (conversationResponse.ok) {
+                    const conversationData = await conversationResponse.json();
+                    if (conversationData.conversation && conversationData.conversation.messages) {
+                        history = conversationData.conversation.messages
+                            .filter(msg => msg.text && msg.text.trim())
+                            .map(msg => ({
+                                role: msg.sender === 'user' ? 'user' : 'model',
+                                parts: [{ text: msg.text.trim() }]
+                            }));
+                    }
+                }
+                
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        history: history,
+                        conversationId: currentConversationId
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addMessageToUI(data.response, 'aether');
+                    log('debug-log', `📥 Resposta recebida: ${data.response.substring(0, 50)}...`);
+                    
+                    // Recarregar conversas para atualizar a lista
+                    loadConversations();
+                } else {
+                    throw new Error('Erro na API');
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao enviar mensagem: ${error.message}`);
+                addMessageToUI('❌ Erro ao processar mensagem', 'aether');
+            }
+        }
+
+        function addMessageToUI(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `message ${sender === 'user' ? 'user-message' : 'aether-message'}`;
+            div.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 5px;">
+                    ${sender === 'user' ? '👤 Você' : '🌌 Aether'}
+                </div>
+                <div>${text}</div>
+            `;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function createTestConversation() {
+            try {
+                const title = prompt('Título da conversa:', 'Teste Contexto ' + new Date().toLocaleTimeString());
+                if (!title) return;
+                
+                const response = await fetch('/api/conversations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title })
+                });
+                
+                const data = await response.json();
+                if (data.conversationId) {
+                    log('debug-log', `✅ Conversa criada: ${data.conversationId}`);
+                    loadConversations();
+                }
+            } catch (error) {
+                log('debug-log', `❌ Erro ao criar conversa: ${error.message}`);
+            }
+        }
+
+        function testContextMemory() {
+            log('debug-log', '🧠 Teste de memória iniciado');
+            log('debug-log', '1. Diga seu nome para a Aether');
+            log('debug-log', '2. Depois pergunte: "Qual é o meu nome?"');
+            log('debug-log', '3. A Aether deve lembrar e responder corretamente');
+        }
+
+        function clearChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">Chat limpo</div>';
+        }
+
+        function clearLogs() {
+            document.getElementById('debug-log').innerHTML = '';
+        }
+
+        // Event listener para Enter no input
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Carregar informações do usuário ao iniciar
+        window.onload = function() {
+            loadUserInfo();
+        };
+    </script>
+</body>
+</html> 

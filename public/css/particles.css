@@ -1,0 +1,40 @@
+/* =====================
+   Particles CSS
+   ===================== */
+
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background: transparent;
+}
+
+/* Configurações das partículas */
+.particles-js-canvas-el {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Efeitos de hover nas partículas */
+#particles-js:hover {
+  cursor: pointer;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  #particles-js {
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 480px) {
+  #particles-js {
+    opacity: 0.5;
+  }
+} 

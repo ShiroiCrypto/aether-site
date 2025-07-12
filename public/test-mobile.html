@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Mobile - Aether</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    
+    <style>
+        .test-section {
+            padding: 2rem 1rem;
+            margin: 1rem 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .test-card {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .test-button {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.8rem 1.2rem;
+            margin: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .test-button:hover {
+            background: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+        
+        .device-info {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .responsive-test {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .responsive-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-atom"></i>
+                <span>Aether</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Início</a>
+                <a href="#about" class="nav-link">Sobre</a>
+                <a href="#features" class="nav-link">Funcionalidades</a>
+                <a href="#chat" class="nav-link">Chat</a>
+                <a href="#discord" class="nav-link">Discord</a>
+            </div>
+            
+            <div class="nav-auth">
+                <button class="btn-discord">
+                    <i class="fab fa-discord"></i>
+                    Entrar
+                </button>
+            </div>
+            
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="padding-top: 80px;">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 2rem;">🧪 Teste de Responsividade Mobile</h1>
+            
+            <!-- Device Info -->
+            <div class="device-info">
+                <h3>📱 Informações do Dispositivo</h3>
+                <div id="device-info">
+                    <p><strong>Largura da tela:</strong> <span id="screen-width"></span>px</p>
+                    <p><strong>Altura da tela:</strong> <span id="screen-height"></span>px</p>
+                    <p><strong>Orientacao:</strong> <span id="orientation"></span></p>
+                    <p><strong>User Agent:</strong> <span id="user-agent"></span></p>
+                    <p><strong>Touch:</strong> <span id="touch-support"></span></p>
+                </div>
+            </div>
+            
+            <!-- Navigation Test -->
+            <div class="test-section">
+                <h3>🧭 Teste de Navegação</h3>
+                <p>Teste o menu hambúrguer e navegação responsiva</p>
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Menu Mobile</h4>
+                        <p>Clique no ícone hambúrguer para testar o menu mobile</p>
+                        <button class="test-button" onclick="testMenu()">
+                            <i class="fas fa-bars"></i> Testar Menu
+                        </button>
+                    </div>
+                    <div class="test-card">
+                        <h4>Links de Navegação</h4>
+                        <p>Teste os links do menu mobile</p>
+                        <button class="test-button" onclick="testNavigation()">
+                            <i class="fas fa-link"></i> Testar Links
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Responsive Elements Test -->
+            <div class="test-section">
+                <h3>📐 Teste de Elementos Responsivos</h3>
+                <div class="responsive-test">
+                    <div class="responsive-item">
+                        <h4>Botão Pequeno</h4>
+                        <button class="test-button">Clique</button>
+                    </div>
+                    <div class="responsive-item">
+                        <h4>Botão Médio</h4>
+                        <button class="btn-primary">Botão Primário</button>
+                    </div>
+                    <div class="responsive-item">
+                        <h4>Botão Grande</h4>
+                        <button class="btn-secondary">Botão Secundário</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Test -->
+            <div class="test-section">
+                <h3>💬 Teste do Chat</h3>
+                <div class="chat-container" style="height: 400px;">
+                    <div class="chat-sidebar" id="chat-sidebar">
+                        <div class="sidebar-header">
+                            <h3>Conversas</h3>
+                            <button class="btn-new-conversation">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="conversations-list">
+                            <div class="conversation-item active">
+                                <div class="conversation-title">Conversa 1</div>
+                                <div class="conversation-date">Hoje</div>
+                                <div class="conversation-preview">Teste de conversa...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="chat-status">
+                                <div class="status-indicator online"></div>
+                                <span>Aether - Online</span>
+                            </div>
+                            <div class="chat-controls">
+                                <button class="btn-control">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-control">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                                <button id="sidebar-toggle" class="btn-control">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages">
+                            <div class="message aether-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-author">Aether</span>
+                                        <span class="message-time">Agora</span>
+                                    </div>
+                                    <div class="message-text">
+                                        Olá! Este é um teste de responsividade mobile.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <div class="input-container">
+                                <input type="text" placeholder="Digite sua mensagem..." maxlength="500">
+                                <button class="btn-send">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Touch Test -->
+            <div class="test-section">
+                <h3>👆 Teste de Touch</h3>
+                <p>Teste a responsividade ao toque em dispositivos móveis</p>
+                <div class="test-grid">
+                    <div class="test-card">
+                        <h4>Área de Toque</h4>
+                        <p>Botões devem ter pelo menos 44px de altura</p>
+                        <button class="test-button" style="min-height: 44px; min-width: 44px;">
+                            Toque Aqui
+                        </button>
+                    </div>
+                    <div class="test-card">
+                        <h4>Scroll Test</h4>
+                        <p>Teste o scroll suave</p>
+                        <button class="test-button" onclick="scrollToTop()">
+                            <i class="fas fa-arrow-up"></i> Topo
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Breakpoint Test -->
+            <div class="test-section">
+                <h3>📱 Teste de Breakpoints</h3>
+                <div id="breakpoint-info">
+                    <p><strong>Breakpoint Atual:</strong> <span id="current-breakpoint"></span></p>
+                    <p><strong>CSS Aplicado:</strong> <span id="applied-css"></span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Device Info
+        function updateDeviceInfo() {
+            document.getElementById('screen-width').textContent = window.innerWidth;
+            document.getElementById('screen-height').textContent = window.innerHeight;
+            document.getElementById('orientation').textContent = window.innerWidth > window.innerHeight ? 'Landscape' : 'Portrait';
+            document.getElementById('user-agent').textContent = navigator.userAgent.substring(0, 50) + '...';
+            document.getElementById('touch-support').textContent = 'ontouchstart' in window ? 'Sim' : 'Não';
+        }
+        
+        // Breakpoint Info
+        function updateBreakpointInfo() {
+            const width = window.innerWidth;
+            let breakpoint = '';
+            let css = '';
+            
+            if (width >= 1024) {
+                breakpoint = 'Desktop (>= 1024px)';
+                css = 'Estilos desktop';
+            } else if (width >= 768) {
+                breakpoint = 'Tablet (768px - 1023px)';
+                css = 'Estilos tablet';
+            } else if (width >= 480) {
+                breakpoint = 'Mobile Grande (480px - 767px)';
+                css = 'Estilos mobile grande';
+            } else {
+                breakpoint = 'Mobile Pequeno (< 480px)';
+                css = 'Estilos mobile pequeno';
+            }
+            
+            document.getElementById('current-breakpoint').textContent = breakpoint;
+            document.getElementById('applied-css').textContent = css;
+        }
+        
+        // Menu Test
+        function testMenu() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (navToggle && navMenu) {
+                navToggle.click();
+                setTimeout(() => {
+                    alert('Menu testado! Verifique se abriu/fechou corretamente.');
+                }, 500);
+            }
+        }
+        
+        // Navigation Test
+        function testNavigation() {
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert(`Link clicado: ${link.textContent}`);
+                });
+            });
+            alert('Links configurados para teste!');
+        }
+        
+        // Scroll Test
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const chatSidebar = document.getElementById('chat-sidebar');
+        
+        if (sidebarToggle && chatSidebar) {
+            sidebarToggle.addEventListener('click', () => {
+                chatSidebar.classList.toggle('active');
+                
+                const icon = sidebarToggle.querySelector('i');
+                if (icon) {
+                    if (chatSidebar.classList.contains('active')) {
+                        icon.className = 'fas fa-times';
+                    } else {
+                        icon.className = 'fas fa-bars';
+                    }
+                }
+            });
+        }
+        
+        // Mobile Menu
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                navToggle.classList.toggle('active');
+                
+                if (navMenu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Fechar menu ao clicar em um link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+        
+        // Initialize
+        updateDeviceInfo();
+        updateBreakpointInfo();
+        
+        window.addEventListener('resize', () => {
+            updateDeviceInfo();
+            updateBreakpointInfo();
+        });
+        
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                updateDeviceInfo();
+                updateBreakpointInfo();
+            }, 100);
+        });
+    </script>
+</body>
+</html> 
